@@ -4,14 +4,26 @@ String repoUrl = "https://github.com/nembotmarius/financews.git"
 
 node {
   // Start Stages
-  stage('Clone') {
-      // Clones the repository from the current branch name
-      echo 'Make the output directory'
-      sh 'mkdir -p build'
+    stage('Clone') {
+        // Clones the repository from the current branch name
+        echo 'Make the output directory'
+        sh 'mkdir -p build'
 
-      echo 'Cloning files from (branch: "' + branchName + '" )'
-      dir('build') {
-          git branch: branchName, credentialsId: 	gitCredentials, url: repoUrl
-      }
-  }
+        echo 'Cloning files from (branch: "' + branchName + '" )'
+        dir('build') {
+            git branch: branchName, credentialsId: 	gitCredentials, url: repoUrl
+        }
+    }
+    stage ('Build Eureka Services') {
+        dir('financewseurekadiscovery') {
+            steps {
+                sh 'mvn -Dmaven.test.failure.ignore=true install'
+            }
+            post {
+                success {
+                    junit 'target/surefire-reports/**/*.xml'
+                }
+            }
+        }
+    }
 }
