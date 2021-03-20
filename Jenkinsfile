@@ -14,9 +14,11 @@ node {
             git branch: branchName, credentialsId: 	gitCredentials, url: repoUrl
         }
     }
-    stage ('Build Eureka Services') {
+    stage ('Build and test web services') {
         dir('build/financewseurekadiscovery') {
-            sh 'mvn -B -DskipTests clean package'
+            withMaven {
+              sh "mvn clean verify"
+            } // withMaven will discover the generated Maven artifacts, JUnit Surefire & FailSafe reports and FindBugs reports
         }
     }
 }
