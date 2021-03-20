@@ -1,4 +1,4 @@
-String branchName = env.BRANCH_NAME
+String branchName = "master"
 String gitCredentials = "ba3620ef2e1b6a1746252c383c745c1b6bbfa16e"
 String repoUrl = "https://github.com/nembotmarius/financews.git"
 
