@@ -17,7 +17,7 @@ node {
     stage ('Build Eureka Services') {
         dir('build/financewseurekadiscovery') {
             steps {
-                sh 'mvn -Dmaven.test.failure.ignore=true install'
+                sh 'mvn -B -DskipTests clean package'
             }
             post {
                 success {
