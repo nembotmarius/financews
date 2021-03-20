@@ -16,14 +16,7 @@ node {
     }
     stage ('Build Eureka Services') {
         dir('build/financewseurekadiscovery') {
-            steps {
-                sh 'mvn -B -DskipTests clean package'
-            }
-            post {
-                success {
-                    junit 'target/surefire-reports/**/*.xml'
-                }
-            }
+            sh 'mvn -B -DskipTests clean package'
         }
     }
 }
