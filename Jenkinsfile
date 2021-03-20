@@ -15,10 +15,11 @@ node {
         }
     }
     stage ('Build and test web services') {
-        dir('build/financewseurekadiscovery') {
-            withMaven {
-              sh "mvn clean verify"
-            } // withMaven will discover the generated Maven artifacts, JUnit Surefire & FailSafe reports and FindBugs reports
+        // withMaven will discover the generated Maven artifacts, JUnit Surefire & FailSafe reports and FindBugs reports
+        withMaven {
+            dir('build/financewseurekadiscovery') {
+                sh "mvn clean verify"
+            }
         }
     }
 }
