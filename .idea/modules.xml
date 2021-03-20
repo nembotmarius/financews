@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/financewsclientservice/clients.iml" filepath="$PROJECT_DIR$/financewsclientservice/clients.iml" />
+      <module fileurl="file://$PROJECT_DIR$/financewseurekadiscovery/eureka.iml" filepath="$PROJECT_DIR$/financewseurekadiscovery/eureka.iml" />
+      <module fileurl="file://$PROJECT_DIR$/financeweb.iml" filepath="$PROJECT_DIR$/financeweb.iml" />
+      <module fileurl="file://$PROJECT_DIR$/financewsfrontofficeservice/foffice.iml" filepath="$PROJECT_DIR$/financewsfrontofficeservice/foffice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/financewsgatewayservice/gateway.iml" filepath="$PROJECT_DIR$/financewsgatewayservice/gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/financewssecurityservice/security.iml" filepath="$PROJECT_DIR$/financewssecurityservice/security.iml" />
+    </modules>
+  </component>
+</project>

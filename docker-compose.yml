@@ -1,0 +1,63 @@
+version: '3'
+services:
+  pprdfinancewseurekadiscovery:
+    restart: on-failure
+    container_name: pprdfinancewseurekadiscovery
+    build: ./financewseurekadiscovery
+    ports:
+      - "28761:28761"
+    environment:
+      server.port: '28761'
+
+  pprdfinancewsgatewayservice:
+    restart: on-failure
+    container_name: pprdfinancewsgatewayservice
+    build: ./financewsgatewayservice
+    ports:
+      - "28762:28762"
+    depends_on:
+      - pprdfinancewseurekadiscovery
+    links:
+      - pprdfinancewseurekadiscovery
+    environment: 
+      server.port: '28762'
+      eureka.client.enabled: 'true'
+      eureka.host: pprdfinancewseurekadiscovery
+      eureka.instance.preferIpAddress: 'true'
+      eureka.client.serviceUrl.defaultZone: 'http://pprdfinancewseurekadiscovery:28761/eureka/'
+      zuul.routes.pprdfinancewssecurity.url: 'http://pprdfinancewssecurityservice:28184'
+      zuul.routes.pprdfinancewsclient.url: 'http://pprdfinancewsclientservice:28183'
+
+  pprdfinancewssecurityservice:
+    restart: on-failure
+    container_name: pprdfinancewssecurityservice
+    build: ./financewssecurityservice
+    ports:
+      - "28184:28184"
+    depends_on:
+      - pprdfinancewseurekadiscovery
+    links:
+      - pprdfinancewseurekadiscovery
+    environment: 
+      server.port: '28184'
+      eureka.client.enabled: 'true'
+      eureka.host: pprdfinancewseurekadiscovery
+      eureka.instance.preferIpAddress: 'true'
+      eureka.client.serviceUrl.defaultZone: 'http://pprdfinancewseurekadiscovery:28761/eureka/'
+
+  pprdfinancewsclientservice:
+    restart: on-failure
+    container_name: pprdfinancewsclientservice
+    build: ./financewsclientservice
+    ports:
+      - "28183:28183"
+    depends_on:
+      - pprdfinancewseurekadiscovery
+    links:
+      - pprdfinancewseurekadiscovery
+    environment: 
+      server.port: '28183'
+      eureka.client.enabled: 'true'
+      eureka.host: pprdfinancewseurekadiscovery
+      eureka.instance.preferIpAddress: 'true'
+      eureka.client.serviceUrl.defaultZone: 'http://pprdfinancewseurekadiscovery:28761/eureka/'

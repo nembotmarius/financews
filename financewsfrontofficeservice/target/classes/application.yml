@@ -1,0 +1,32 @@
+## default connection pool
+server:
+  port: 8185
+
+spring:
+  application:
+    name: clientservice
+  jpa:
+    #spring.jpa.hibernate.ddl-auto=create #drop n create table again, good for testing, comment this in production
+    properties:
+      hibernate:
+        default_schema: para
+  datasource:
+    hikari:
+      connectionTimeout: 20000
+      maximumPoolSize: 5
+    url: jdbc:postgresql://91.234.195.27:5432/dev_socec
+    username: postgres
+    password: P@ssw0rd21
+
+  ## Custom data
+userdata:
+  timeout: 30
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
