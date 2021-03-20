@@ -1,5 +1,5 @@
 String branchName = "master"
-String gitCredentials = "2f57ac1f31adcba0bb965eafca6d308bbb261f55"
+String gitCredentials = "4d1ad663-0174-4f9d-b7a9-6d8695e734f0"
 String repoUrl = "https://github.com/nembotmarius/financews.git"
 
 node {
