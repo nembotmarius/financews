@@ -1,3 +1,7 @@
+String branchName = "master"
+String gitCredentials = "4d1ad663-0174-4f9d-b7a9-6d8695e734f0"
+String repoUrl = "https://github.com/nembotmarius/financews.git"
+
 node {
   // Start Stages
     stage('Clone') {
@@ -11,6 +15,7 @@ node {
         }
     }
     stage ('Build and test web services') {
+        // withMaven will discover the generated Maven artifacts, JUnit Surefire & FailSafe reports and FindBugs reports
         dir('build/financewseurekadiscovery') {
             sh "mvn clean verify"
         }
