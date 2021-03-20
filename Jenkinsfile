@@ -19,5 +19,8 @@ node {
         dir('build/financewseurekadiscovery') {
             sh "mvn clean verify"
         }
+        dir('build/financewsgatewayservice') {
+            sh "mvn clean verify"
+        }
     }
 }
