@@ -20,7 +20,7 @@ node {
         dir('build/financewseurekadiscovery') {
             sh "mvn clean verify"
         }
-        echo 'Build and test financewsgatewayservice'
+        echo 'Build and test financewsgatewayservice '
         dir('build/financewsgatewayservice') {
             sh "mvn clean verify"
         }
