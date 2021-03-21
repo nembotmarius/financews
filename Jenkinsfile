@@ -28,7 +28,7 @@ node {
         dir('build/financewssecurityservice') {
             sh "mvn clean verify"
         }
-        echo 'Build and test financewsclientservice '
+        echo 'Build and test financewsclientservice'
         dir('build/financewsclientservice') {
             sh "mvn clean verify"
         }
