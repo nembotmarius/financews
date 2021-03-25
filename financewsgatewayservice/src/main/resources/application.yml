@@ -25,6 +25,8 @@ zuul:
       url: http://localhost:8184
     financewsclient:
       url: http://localhost:8183
+    financewsfrontoffice:
+      url: http://localhost:8185
   ignored-headers: Access-Control-Allow-Credentials, Access-Control-Allow-Origin
 
 ribbon:

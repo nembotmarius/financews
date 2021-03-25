@@ -21,6 +21,12 @@ public interface PacpteRepository extends CrudRepository<PacpteEntity, Long> {
             "inner join para.paclas C on A.csauto = C.csauto " +
             "where A.cpdele = 0 and B.clclez = :clclez and cstypc = 3" +
             "and (A.cpgele not in (1,11,111,101));", nativeQuery = true)
+    Collection<PacpteEntity> findAllPacpteColbyClez(long clclez);
+
+    @Query(value = "Select A.* from para.pacpte A " +
+            "inner join para.paclie B on A.clauto = B.clauto " +
+            "inner join para.paclas C on A.csauto = C.csauto " +
+            "where A.cpdele = 0 and B.clclez = :clclez ;", nativeQuery = true)
     Collection<PacpteEntity> findAllPacptebyClez(long clclez);
 
     @Query(value = "select A.cpauto, A.csauto, A.cscode, A.cpcpte, A.csfrfc, sum(A.djsold) as djsold from ( " +
@@ -29,7 +35,7 @@ public interface PacpteRepository extends CrudRepository<PacpteEntity, Long> {
             ") A group by A.cpauto, A.csauto, A.cscode, A.cpcpte, A.csfrfc;", nativeQuery = true)
     SoldeCompte findSoldeCompte(long cpauto);
 
-    public interface SoldeCompte {
+    interface SoldeCompte {
         long    getCpauto();
         long    getCsauto();
         long    getCscode();

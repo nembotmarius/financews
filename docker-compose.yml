@@ -27,6 +27,7 @@ services:
       eureka.client.serviceUrl.defaultZone: 'http://pprdfinancewseurekadiscovery:28761/eureka/'
       zuul.routes.financewssecurity.url: 'http://pprdfinancewssecurityservice:28184'
       zuul.routes.financewsclient.url: 'http://pprdfinancewsclientservice:28183'
+      zuul.routes.financewsfrontoffice.url: 'http://pprdfinancewsfrontofficeservice:28185'
 
   pprdfinancewssecurityservice:
     restart: on-failure
@@ -68,6 +69,29 @@ services:
       eureka.instance.preferIpAddress: 'true'
       eureka.client.serviceUrl.defaultZone: 'http://pprdfinancewseurekadiscovery:28761/eureka/'
       spring.jpa.properties.hibernate.default_schema: para
+      spring.datasource.hikari.connectionTimeout: 20000
+      spring.datasource.hikari.maximumPoolSize: 5
+      spring.datasource.url: jdbc:postgresql://164.68.106.161:5432/dev_socec
+      spring.datasource.username: postgres
+      spring.datasource.password: P@ssw0rd21
+
+  pprdfinancewsfrontofficeservice:
+    restart: on-failure
+    container_name: pprdfinancewsfrontofficeservice
+    build: ./financewsfrontofficeservice
+    ports:
+      - "28185:28185"
+    depends_on:
+      - pprdfinancewseurekadiscovery
+    links:
+      - pprdfinancewseurekadiscovery
+    environment:
+      server.port: '28185'
+      eureka.client.enabled: 'true'
+      eureka.host: pprdfinancewseurekadiscovery
+      eureka.instance.preferIpAddress: 'true'
+      eureka.client.serviceUrl.defaultZone: 'http://pprdfinancewseurekadiscovery:28761/eureka/'
+      spring.jpa.properties.hibernate.default_schema: frof
       spring.datasource.hikari.connectionTimeout: 20000
       spring.datasource.hikari.maximumPoolSize: 5
       spring.datasource.url: jdbc:postgresql://164.68.106.161:5432/dev_socec

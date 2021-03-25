@@ -1,6 +1,7 @@
 package com.nembotmarius.financeweb.fontoffice.controller;
 
 import com.nembotmarius.financeweb.fontoffice.entity.PacpteEntity;
+import com.nembotmarius.financeweb.fontoffice.model.Pacpte;
 import com.nembotmarius.financeweb.fontoffice.repository.PacpteRepository;
 import com.nembotmarius.financeweb.fontoffice.service.PacpteServiceImpl;
 import lombok.NonNull;
@@ -28,11 +29,29 @@ public class PacpteApiImpl implements PacpteApi{
     }
 
     @Override
+    public ResponseEntity<Pacpte> getComptebyid(
+            @NonNull String user,
+            @NonNull String token,
+            @NonNull String cpauto
+    ) {
+        return new ResponseEntity<>(pacpteservice.getComptebyid(user, token, cpauto), HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Collection<PacpteEntity>> getComptebyclez(
             @NonNull String user,
             @NonNull String token,
             @NonNull String clclez
     ) {
         return new ResponseEntity<>(pacpteservice.getComptebyclez(user, token, clclez), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Collection<PacpteEntity>> getAllComptebyclez(
+            @NonNull String user,
+            @NonNull String token,
+            @NonNull String clclez
+    ) {
+        return new ResponseEntity<>(pacpteservice.getAllComptebyclez(user, token, clclez), HttpStatus.OK);
     }
 }

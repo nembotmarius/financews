@@ -26,6 +26,14 @@ public class Utils {
         return Long.parseLong(dtf.format(now));
     }
 
+
+
+    public long getCurrentDate2(){
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMdd");
+        LocalDateTime now = LocalDateTime.now();
+        return Long.parseLong(dtf.format(now));
+    }
+
     public String getCurrentDateStr(){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
         LocalDateTime now = LocalDateTime.now();

@@ -4,17 +4,17 @@ server:
 
 spring:
   application:
-    name: clientservice
+    name: fofficeservice
   jpa:
     #spring.jpa.hibernate.ddl-auto=create #drop n create table again, good for testing, comment this in production
     properties:
       hibernate:
-        default_schema: para
+        default_schema: frof
   datasource:
     hikari:
       connectionTimeout: 20000
       maximumPoolSize: 5
-    url: jdbc:postgresql://91.234.195.27:5432/dev_socec
+    url: jdbc:postgresql://164.68.106.161:5432/dev_socec
     username: postgres
     password: P@ssw0rd21
 
