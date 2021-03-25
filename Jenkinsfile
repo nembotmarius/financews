@@ -32,6 +32,10 @@ node {
         dir('build/financewsclientservice') {
             sh "mvn clean verify"
         }
+        echo 'Build and test financewsfrontofficeservice'
+        dir('build/financewsfrontofficeservice') {
+            sh "mvn clean verify"
+        }
     }
     stage ('Build docker image and launch container') {
         echo 'start docker compose'
