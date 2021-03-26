@@ -37,7 +37,7 @@ node {
             sh "mvn clean verify"
         }
     }
-    stage ('Build docker image and launch container') {
+    stage ('Build docker image and launch container ') {
         echo 'start docker compose'
         dir('build') {
             sh "docker container stop \$(docker container ls -q --filter name=pprdfinancews*)"
