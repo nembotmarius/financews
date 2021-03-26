@@ -32,7 +32,7 @@ node {
         dir('build/financewsclientservice') {
             sh "mvn clean verify"
         }
-        echo 'Build and test financewsfrontofficeservice '
+        echo 'Build and test financewsfrontofficeservice'
         dir('build/financewsfrontofficeservice') {
             sh "mvn clean verify"
         }
