@@ -16,7 +16,7 @@ import java.util.Collection;
 //@RequestMapping("financewsfrontoffice")
 public interface FroujoApi {
     //Journée collecte ouvertes du jour
-    @PostMapping(path="/getallopenday/{oudajr}/{oustat}/{oustat2}")
+    @PostMapping(path="/getallopenday/{stauto}/{oudajr}/{oustat}/{oustat2}")
     @ApiResponses(value = {
             @ApiResponse(code=200, message="Les journées collectes de la journée"),
             @ApiResponse(code=400, message="Echec de recuperation des journées collectes"),
@@ -30,6 +30,7 @@ public interface FroujoApi {
     ResponseEntity<Collection<FroujoEntity>> getAllOpenDay(
             @RequestHeader("user") String user,
             @RequestHeader("token") String token,
+            @PathVariable("stauto") String stauto,
             @PathVariable("oudajr") String oudajr,
             @PathVariable("oustat") String oustat,
             @PathVariable("oustat2") String oustat2

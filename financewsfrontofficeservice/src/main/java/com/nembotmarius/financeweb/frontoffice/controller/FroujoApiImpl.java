@@ -20,10 +20,11 @@ public class FroujoApiImpl implements FroujoApi{
     public ResponseEntity<Collection<FroujoEntity>> getAllOpenDay(
             @NonNull String user,
             @NonNull String token,
+            @NonNull String stauto,
             @NonNull String oudajr,
             @NonNull String oustat,
             @NonNull String oustat2)
     {
-        return new ResponseEntity<>(froujoservice.getAllOpenDay(user, token, oudajr, oustat, oustat2), HttpStatus.OK);
+        return new ResponseEntity<>(froujoservice.getAllOpenDay(user, token, stauto, oudajr, oustat, oustat2), HttpStatus.OK);
     }
 }

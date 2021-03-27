@@ -1,4 +1,4 @@
-package com.nembotmarius.financeweb.frontoffice.config;
+package com.nembotmarius.financeweb.clients.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

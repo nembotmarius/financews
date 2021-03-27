@@ -56,14 +56,14 @@ public interface PacpteApi {
     //Get compte by clez
     @PostMapping(path="/getpacptebyclez/{clclez}")
     @ApiResponses(value = {
-            @ApiResponse(code=200, message="Les comptes du clients1 ont été recupérés dans la BD"),
+            @ApiResponse(code=200, message="Les comptes du clients ont été recupérés dans la BD"),
             @ApiResponse(code=400, message="Echec de recuperation des compte"),
             @ApiResponse(code=500, message="Echec Server"),
             @ApiResponse(code=401, message="Echec d'authentification")
     })
     @ApiOperation(
-            value = "Recherche des comptes du clients1 a partir de sa clez",
-            notes = "Cette opération va rechercher les comptes du clients1 a partir de sa clez dans la BD a partir de son ID Compte"
+            value = "Recherche des comptes du clients a partir de sa clez",
+            notes = "Cette opération va rechercher les comptes du clients a partir de sa clez dans la BD a partir de son ID Compte"
     )
     ResponseEntity<Collection<PacpteEntity>> getComptebyclez(
             @RequestHeader("user") String user,
@@ -74,14 +74,14 @@ public interface PacpteApi {
     //Get compte by clez
     @PostMapping(path="/getallpacptebyclez/{clclez}")
     @ApiResponses(value = {
-            @ApiResponse(code=200, message="Les comptes du clients1 ont été recupérés dans la BD"),
+            @ApiResponse(code=200, message="Les comptes du clients ont été recupérés dans la BD"),
             @ApiResponse(code=400, message="Echec de recuperation des compte"),
             @ApiResponse(code=500, message="Echec Server"),
             @ApiResponse(code=401, message="Echec d'authentification")
     })
     @ApiOperation(
-            value = "Recherche des comptes du clients1 a partir de sa clez",
-            notes = "Cette opération va rechercher les comptes du clients1 a partir de sa clez dans la BD a partir de son ID Compte"
+            value = "Recherche des comptes du clients a partir de sa clez",
+            notes = "Cette opération va rechercher les comptes du clients a partir de sa clez dans la BD a partir de son ID Compte"
     )
     ResponseEntity<Collection<PacpteEntity>> getAllComptebyclez(
             @RequestHeader("user") String user,

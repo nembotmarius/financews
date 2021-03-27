@@ -24,7 +24,7 @@ public class FroujoServiceImpl implements FroujoService{
     private String getUserBucketPath;
 
     @Override
-    public Collection<FroujoEntity> getAllOpenDay(String user, String token, String oudajr, String oustat, String oustat2) {
+    public Collection<FroujoEntity> getAllOpenDay(String user, String token, String stauto, String oudajr, String oustat, String oustat2) {
         //Verifie que le token est valide
         //si non valide renvoi une erreur 401
         if(!checkAuthentification(user, token)){
@@ -36,11 +36,12 @@ public class FroujoServiceImpl implements FroujoService{
         //verifie si clauto n'est pas null
         Utils o = new Utils();
         if(o.isNumeric(oudajr) && o.isNumeric(oustat) && o.isNumeric(oustat2)){
-            //sinon cherche si ce clients1 existe dans la bd
+            //sinon cherche si ce clients existe dans la bd
+            int stauto2 = Integer.parseInt(stauto);
             long oudajr2 = Long.parseLong(oudajr);
             int oustat21 = Integer.parseInt(oustat);
             int oustat22 = Integer.parseInt(oustat2);
-            Collection<FroujoEntity> lstfroujo = Froujorepository.findAllOpenday(oudajr2, oustat21, oustat22);
+            Collection<FroujoEntity> lstfroujo = Froujorepository.findAllOpenday(stauto2, oudajr2, oustat21, oustat22);
 
             if(lstfroujo != null){
                 //une fois trouver retourner la collecte
