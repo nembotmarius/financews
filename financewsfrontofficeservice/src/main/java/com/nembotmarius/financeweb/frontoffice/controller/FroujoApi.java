@@ -1,6 +1,6 @@
 package com.nembotmarius.financeweb.frontoffice.controller;
 
-import com.nembotmarius.financeweb.frontoffice.entity.FroujoEntity;
+import com.nembotmarius.financeweb.frontoffice.repository.FroujoRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -27,7 +27,7 @@ public interface FroujoApi {
             value = "Recherche les journées collectes ouvertes",
             notes = "Cette opération va rechercher les journées ouvertes au niveau de la bd"
     )
-    ResponseEntity<Collection<FroujoEntity>> getAllOpenDay(
+    ResponseEntity<Collection<FroujoRepository.JourneeCol>> getAllOpenDay(
             @RequestHeader("user") String user,
             @RequestHeader("token") String token,
             @PathVariable("stauto") String stauto,

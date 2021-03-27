@@ -1,6 +1,7 @@
 package com.nembotmarius.financeweb.frontoffice.controller;
 
 import com.nembotmarius.financeweb.frontoffice.entity.FroujoEntity;
+import com.nembotmarius.financeweb.frontoffice.repository.FroujoRepository;
 import com.nembotmarius.financeweb.frontoffice.service.FroujoService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class FroujoApiImpl implements FroujoApi{
     private final FroujoService froujoservice;
 
     @Override
-    public ResponseEntity<Collection<FroujoEntity>> getAllOpenDay(
+    public ResponseEntity<Collection<FroujoRepository.JourneeCol>> getAllOpenDay(
             @NonNull String user,
             @NonNull String token,
             @NonNull String stauto,
