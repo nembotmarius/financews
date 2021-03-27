@@ -44,7 +44,7 @@ public class PacpteServiceImpl implements PacpteService{
         //verifie si clauto n'est pas null
         Utils o = new Utils();
         if(o.isNumeric(cpauto)){
-            //sinon cherche si ce clients existe dans la bd
+            //sinon cherche si ce clients1 existe dans la bd
             long cpauto2 = Long.parseLong(cpauto);
             PacpteRepository.SoldeCompte soldecompte = pacpterepository.findSoldeCompte(cpauto2);
 
@@ -75,7 +75,7 @@ public class PacpteServiceImpl implements PacpteService{
         //verifie si clauto n'est pas null
         Utils o = new Utils();
         if(o.isNumeric(cpauto)){
-            //sinon cherche si ce clients existe dans la bd
+            //sinon cherche si ce clients1 existe dans la bd
             long cpauto2 = Long.parseLong(cpauto);
             PacpteEntity pacpteentity = pacpterepository.findPacpteById(cpauto2);
             Collection<PadecoEntity> lsdeco = padecorepository.findAllDecouvert(cpauto2, o.getCurrentDate2());
@@ -120,7 +120,7 @@ public class PacpteServiceImpl implements PacpteService{
         //verifie si clauto n'est pas null
         Utils o = new Utils();
         if(o.isNumeric(clclez)){
-            //sinon cherche si ce clients existe dans la bd
+            //sinon cherche si ce clients1 existe dans la bd
             long clclez2 = Long.parseLong(clclez);
             Collection<PacpteEntity> lstpacpte = pacpterepository.findAllPacpteColbyClez(clclez2);
 
@@ -150,7 +150,7 @@ public class PacpteServiceImpl implements PacpteService{
         //verifie si clauto n'est pas null
         Utils o = new Utils();
         if(o.isNumeric(clclez)){
-            //sinon cherche si ce clients existe dans la bd
+            //sinon cherche si ce clients1 existe dans la bd
             long clclez2 = Long.parseLong(clclez);
             Collection<PacpteEntity> lstpacpte = pacpterepository.findAllPacptebyClez(clclez2);
 

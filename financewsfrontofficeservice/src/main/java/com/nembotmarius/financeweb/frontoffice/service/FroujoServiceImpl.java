@@ -36,7 +36,7 @@ public class FroujoServiceImpl implements FroujoService{
         //verifie si clauto n'est pas null
         Utils o = new Utils();
         if(o.isNumeric(oudajr) && o.isNumeric(oustat) && o.isNumeric(oustat2)){
-            //sinon cherche si ce clients existe dans la bd
+            //sinon cherche si ce clients1 existe dans la bd
             long oudajr2 = Long.parseLong(oudajr);
             int oustat21 = Integer.parseInt(oustat);
             int oustat22 = Integer.parseInt(oustat2);
