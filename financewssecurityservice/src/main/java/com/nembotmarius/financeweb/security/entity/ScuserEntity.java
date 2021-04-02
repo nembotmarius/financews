@@ -11,7 +11,8 @@ import javax.persistence.*;
 @RequiredArgsConstructor
 @Entity(name = "scuser")
 public class ScuserEntity {
-    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long	   usauto;
     private long	   acauto;
     private String	   usmatr;

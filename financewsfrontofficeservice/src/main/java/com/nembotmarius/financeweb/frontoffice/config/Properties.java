@@ -12,6 +12,15 @@ public class Properties{
     @Value("${userdata.timeout}")
     private String userTimeout;
 
+    @Value("${userdata.smslogin}")
+    private String smslogin;
+
+    @Value("${userdata.smspassword}")
+    private String smspassword;
+
+    @Value("${userdata.smssenderid}")
+    private String smssenderid;
+
     // getting the value from that key which you set in application.properties
     @Bean
     public String getUserTimeout() {

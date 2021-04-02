@@ -1,6 +1,5 @@
 package com.nembotmarius.financeweb.frontoffice.service;
 
-import com.nembotmarius.financeweb.frontoffice.entity.FroujoEntity;
 import com.nembotmarius.financeweb.frontoffice.repository.FroujoRepository;
 
 import java.util.Collection;

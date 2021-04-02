@@ -1,6 +1,15 @@
 ## default connection pool
+## Changes to the Default Error Page’s Content
+## The error message and any binding errors are no longer included in the default
+## error page by default. This reduces the risk of leaking information to a client.
+## server.error.include-message and server.error.include-binding-errors can be used
+## to control the inclusion of the message and binding errors respectively.
+## Supported values are always, on-param, and never.
 server:
   port: 8183
+  error:
+    include-message: always
+    include-binding-errors: always
 
 spring:
   application:
