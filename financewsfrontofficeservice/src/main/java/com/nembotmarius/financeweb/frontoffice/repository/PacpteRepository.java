@@ -28,10 +28,10 @@ public interface PacpteRepository extends CrudRepository<PacpteEntity, Long> {
             "where A.cpdele = 0 and B.clclez = :clclez ;", nativeQuery = true)
     Collection<PacpteEntity> findAllPacptebyClez(long clclez);
 
-    @Query(value = "select A.cpauto, A.csauto, A.cscode, A.cpcpte, A.csfrfc, sum(A.djsold) as djsold from ( " +
-            "select A.cpauto, A.csauto, A.cscode, B.csfrfc, (A.djncod || A.djncoc) as cpcpte, (-A.djmond + A.djmonc) as djsold " +
-            "from comp.codetj A inner join para.paclas B on (A.csauto=B.csauto) where A.cpauto=:cpauto " +
-            ") A group by A.cpauto, A.csauto, A.cscode, A.cpcpte, A.csfrfc;", nativeQuery = true)
+    @Query(value = "select A.cpauto, A.csauto, A.cscode, A.cpcpte, A.csfrfc, sum(A.djsold) as djsold from ( \n" +
+            " select C.cpauto, B.csauto, B.cscode, B.csfrfc, C.cpcpte as cpcpte, coalesce((-A.djmond + A.djmonc),0) as djsold \n" +
+            " from para.paclas B inner join  para.pacpte C on B.csauto = C.csauto left join comp.codetj A on (C.cpauto=A.cpauto) where C.cpauto= :cpauto \n" +
+            " ) A group by A.cpauto, A.csauto, A.cscode, A.cpcpte, A.csfrfc;", nativeQuery = true)
     SoldeCompte findSoldeCompte(long cpauto);
 
     interface SoldeCompte {
