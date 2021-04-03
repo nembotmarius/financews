@@ -1,12 +1,16 @@
 package com.nembotmarius.financeweb.clients.service;
 
+import com.nembotmarius.financeweb.clients.entity.AnctelEntity;
 import com.nembotmarius.financeweb.clients.entity.AntranEntity;
+import com.nembotmarius.financeweb.clients.entity.PaclieEntity;
 import com.nembotmarius.financeweb.clients.entity.ScsessEntity;
 import com.nembotmarius.financeweb.clients.exception.AuthenticationFail;
 import com.nembotmarius.financeweb.clients.exception.Deletewithwrongid;
 import com.nembotmarius.financeweb.clients.exception.NotFoundException;
 import com.nembotmarius.financeweb.clients.model.Collecte;
+import com.nembotmarius.financeweb.clients.repository.AnctelRepository;
 import com.nembotmarius.financeweb.clients.repository.AntranRepository;
+import com.nembotmarius.financeweb.clients.repository.PaclieRepository;
 import com.nembotmarius.financeweb.clients.repository.ScsessRepository;
 import com.nembotmarius.financeweb.clients.utils.Utils;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +24,8 @@ import java.util.Collection;
 public class AntranServiceImpl implements AntranService {
     private final AntranRepository antranrepository;
     private final ScsessRepository scsessrepository;
+    private final PaclieRepository paclierepository;
+    private final AnctelRepository anctelrepository;
 
     @Autowired
     private String getUserBucketPath;
@@ -37,34 +43,70 @@ public class AntranServiceImpl implements AntranService {
         Utils o = new Utils();
         String Motif = "Collecte du " + o.getCurrentDateStr() + "(" + c.getCpinti() + ")";
 
+        //recupere le client qui a effectué l'operation
+        PaclieEntity paclieentity = paclierepository.findPaclieById(Long.parseLong(c.getClauto()));
+        if(paclieentity!=null){
+            String otelval = paclieentity.getCltelp();
+            String otel = String.valueOf(paclieentity.getCltel1());
+            String ntel = c.getCltel1();
+            //si le client n'a pas encore activé les sms alors mets a jours le telephone et active
+            if(otelval.equals("")){
+                if(c.getCltel1().length()>=9){
+                    paclieentity.setCltel1(Long.parseLong(c.getCltel1()));
+                    paclieentity.setCltelp("Ok");
+                    paclierepository.save(paclieentity);
+                }
+            }else{
+                if(!ntel.equals(otel)){
+                    AnctelEntity anctelentity = new AnctelEntity();
+                    anctelentity.setAtauto(-1);
+                    anctelentity.setUsauto(Integer.parseInt(c.getUsauto()));
+                    anctelentity.setClauto(paclieentity.getClauto());
+                    anctelentity.setClclez(paclieentity.getClclez());
+                    anctelentity.setClnomc(paclieentity.getClnomc());
+                    anctelentity.setAtdesc("Modification Numero de telephone");
+                    anctelentity.setAtntel(c.getCltel1());
+                    anctelentity.setAtotel(String.valueOf(paclieentity.getCltel1()));
+                    anctelentity.setStauto(Integer.parseInt(c.getStauto()));
 
-        AntranEntity antranentity = new AntranEntity();
-        antranentity.setAnauto(-1);
-        antranentity.setStauto(Long.parseLong(c.getStauto()));
-        antranentity.setUsauto(Long.parseLong(c.getUsauto()));
-        antranentity.setUscpte(c.getCpcpte());
-        antranentity.setOuauto(Long.parseLong(c.getOuauto()));
-        antranentity.setAndatr(o.getCurrentDate());
-        antranentity.setAnmont(Long.parseLong(c.getMontant()));
-        antranentity.setAnclez(Long.parseLong(c.getClclez()));
-        antranentity.setAninti(c.getCpinti());
-        antranentity.setAntele(Long.parseLong(c.getCltel1()));
-        antranentity.setAncnic(c.getClucni());
-        antranentity.setClauto(Long.parseLong(c.getClauto()));
-        antranentity.setCpcpte(c.getCpcpte());
-        antranentity.setAntier(c.getCpinti());
-        antranentity.setAnpiec(c.getIdtran());
-        antranentity.setAnmoti(Motif);
-        antranentity.setAnenso(-1);
-        antranentity.setAndacr(o.getCurrentDate());
-        antranentity.setAnusup(0);
-        antranentity.setAndaup(o.getCurrentDate());
-        antranentity.setAnnoup(0);
-        antranentity.setAndele(0);
-        antranentity.setAnusde(0);
-        antranentity.setAnstat(10);
+                    anctelrepository.save(anctelentity);
+                }
+            }
+        }
 
-        return antranrepository.save(antranentity);
+        AntranEntity antranentitycheck = antranrepository.findAntranByanpiec(c.getIdtran());
+        if(antranentitycheck==null){
+            //si la transaction n'existe pas crée
+            AntranEntity antranentity = new AntranEntity();
+            antranentity.setAnauto(-1);
+            antranentity.setStauto(Long.parseLong(c.getStauto()));
+            antranentity.setUsauto(Long.parseLong(c.getUsauto()));
+            antranentity.setUscpte(c.getCpcpte());
+            antranentity.setOuauto(Long.parseLong(c.getOuauto()));
+            antranentity.setAndatr(o.getCurrentDate());
+            antranentity.setAnmont(Long.parseLong(c.getMontant()));
+            antranentity.setAnclez(Long.parseLong(c.getClclez()));
+            antranentity.setAninti(c.getCpinti());
+            antranentity.setAntele(Long.parseLong(c.getCltel1()));
+            antranentity.setAncnic(c.getClucni());
+            antranentity.setClauto(Long.parseLong(c.getClauto()));
+            antranentity.setCpcpte(c.getCpcpte());
+            antranentity.setAntier(c.getCpinti());
+            antranentity.setAnpiec(c.getIdtran());
+            antranentity.setAnmoti(Motif);
+            antranentity.setAnenso(-1);
+            antranentity.setAndacr(o.getCurrentDate());
+            antranentity.setAnusup(0);
+            antranentity.setAndaup(o.getCurrentDate());
+            antranentity.setAnnoup(0);
+            antranentity.setAndele(0);
+            antranentity.setAnusde(0);
+            antranentity.setAnstat(10);
+
+            return antranrepository.save(antranentity);
+        }else{
+            throw new Deletewithwrongid("Cette transaction a déjà été enregistré");
+        }
     }
 
     @Override

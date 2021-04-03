@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class Collecte {
+
     private String idtran;
     private String cpcpte;
     private String clnomc;

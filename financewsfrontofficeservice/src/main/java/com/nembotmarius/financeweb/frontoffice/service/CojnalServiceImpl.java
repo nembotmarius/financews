@@ -283,7 +283,7 @@ public class CojnalServiceImpl implements CojnalService{
             String cpcpte = c.getDjncoc() + c.getDjncod();
             String[] cpcptetbl = cpcpte.split(" ");
             if(cpcptetbl.length>=3) cpcpte = cpcptetbl[0] + ".." + cpcptetbl[2];
-            String cpinti = (!c.getCpinti().equals(""))?c.getCpinti().split(" ")[0]:"";
+
             long montant = djmond + djmonc;
 
             String typeop = "crédit";
@@ -293,6 +293,9 @@ public class CojnalServiceImpl implements CojnalService{
             PaclieEntity p = paclierepository.findPaclieByCpauto(cpauto);
             String cltelp = p.getCltelp();
             long cltel1 = p.getCltel1();
+
+            String cpinti = p.getClnomc();
+            cpinti = (!cpinti.equals(""))?cpinti.split(" ")[0]:"";
 
             Utils o = new Utils();
 

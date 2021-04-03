@@ -12,7 +12,8 @@ import javax.persistence.*;
 @Entity(name = "paclie")
 public class PaclieEntity {
 
-    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long clauto;
     private int claut2;
     private int stauto;
