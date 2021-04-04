@@ -43,7 +43,7 @@ public class GatewayApplication {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
-						.allowedOrigins("https://dev.socecbt.com")
+						.allowedOrigins("https://prod.socecbt.com")
 						.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
 			}
 		};
