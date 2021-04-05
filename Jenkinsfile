@@ -37,10 +37,10 @@ node {
             sh "mvn clean verify"
         }
     }
-    stage ('Build docker image and launch container') {
+    stage ('Build docker image and launch container ') {
         echo 'start docker compose'
         dir('build') {
-            sh "docker container stop \$(docker container ls -q --filter name=prodfinancews*) || true"
+            sh "docker container stop \$(docker container ls -q --filter name=pprdfinancews*) || true"
             sh "docker rm \$(docker ps -a -q) || true"
             sh "docker image rmi \$(docker images | grep latest | tr -s ' ' | cut -d ' ' -f 3) || true"
             sh "docker-compose up -d"
