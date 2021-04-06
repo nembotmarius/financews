@@ -74,8 +74,14 @@ public class AntranServiceImpl implements AntranService {
             }
         }
 
-        AntranEntity antranentitycheck = antranrepository.findAntranByanpiec(c.getIdtran());
+        AntranEntity antranentitycheck = antranrepository.findAntranByanpiec(c.getIdtran(), Long.parseLong(c.getOuauto()));
+        int vardelete = 0;
         if(antranentitycheck==null){
+            vardelete = 0;
+        }else{
+            vardelete = 1;
+        }
+
             //si la transaction n'existe pas crée
             AntranEntity antranentity = new AntranEntity();
             antranentity.setAnauto(-1);
@@ -99,14 +105,12 @@ public class AntranServiceImpl implements AntranService {
             antranentity.setAnusup(0);
             antranentity.setAndaup(o.getCurrentDate());
             antranentity.setAnnoup(0);
-            antranentity.setAndele(0);
+            antranentity.setAndele(vardelete);
             antranentity.setAnusde(0);
             antranentity.setAnstat(10);
 
             return antranrepository.save(antranentity);
-        }else{
-            return antranentitycheck;
-        }
+
     }
 
     @Override

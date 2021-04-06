@@ -19,6 +19,6 @@ public interface AntranRepository extends CrudRepository<AntranEntity, Long> {
     @Query(value = "SELECT * FROM andr.antran u WHERE u.ouauto = :ouauto", nativeQuery = true)
     Collection<AntranEntity> findAntranByDay(long ouauto);
 
-    @Query(value = "SELECT * FROM andr.antran u WHERE u.anpiec = :anpiec", nativeQuery = true)
-    AntranEntity findAntranByanpiec(String anpiec);
+    @Query(value = "SELECT * FROM andr.antran u WHERE u.anpiec = :anpiec and u.ouauto = :ouauto", nativeQuery = true)
+    AntranEntity findAntranByanpiec(String anpiec, long ouauto);
 }
