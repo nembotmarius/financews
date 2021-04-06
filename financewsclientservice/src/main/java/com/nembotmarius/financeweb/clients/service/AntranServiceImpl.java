@@ -105,7 +105,7 @@ public class AntranServiceImpl implements AntranService {
 
             return antranrepository.save(antranentity);
         }else{
-            throw new Deletewithwrongid("Cette transaction a déjà été enregistré");
+            return antranentitycheck;
         }
     }
 
