@@ -311,7 +311,7 @@ public class CojnalServiceImpl implements CojnalService{
             }
             //--------------------------------------------------------------------
             // Envoi le sms et Modifie le statut a 21 sms envoyé
-            if(!cltelp.equals("")){
+            if(!cltelp.equals("") && String.valueOf(cltel1).length()>=9){
                 String messagesms = "M.(Mme) " + cpinti + ", " + typeop + " de votre compte " + cpcpte + " de XAF " + String.valueOf(montant) + " le  29-03-2021 à 10:54. Merci pour votre fidélité.";
                 String destinataire = String.valueOf(cltel1);
                 String message = messagesms;
