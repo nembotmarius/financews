@@ -46,6 +46,12 @@ public class Utils {
         return dtf.format(now);
     }
 
+    public String convertDateintToStr(long intdate){
+        String strdate = String.valueOf(intdate);
+        String result = strdate.substring(6, 8) + "/" + strdate.substring(4, 6) + "/" + strdate.substring(0, 4) + " " + strdate.substring(8, 10) + ":" + strdate.substring(10, 12);
+        return result;
+    }
+
     public boolean sendSms(String login,String password,String sender_id,String destinataire,String message) {
         URIBuilder builder = new URIBuilder()
                 .setScheme("https")

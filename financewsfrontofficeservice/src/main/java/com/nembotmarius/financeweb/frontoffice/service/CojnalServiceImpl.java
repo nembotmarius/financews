@@ -162,7 +162,7 @@ public class CojnalServiceImpl implements CojnalService{
         List<Codetj> lstcodetjtoreturn = new ArrayList<>();
         for (Codetj c : lstcodetj) {
             //Mets a jour la clé etrangère et converti le model en entity
-            c.setDjdacr(o.getCurrentDate2());
+            c.setDjdaup(o.getCurrentDate2());
             c.setJnauto(cojnaltoreturn.getJnauto());
             //-------------------------------------------------------
             CodetjEntity codetjentity = CodetjMapper.INSTANCE.mapModelToEntity(c);
@@ -275,12 +275,16 @@ public class CojnalServiceImpl implements CojnalService{
         }
 
         String result = "";
+        Utils o = new Utils();
+        String datemvt = o.convertDateintToStr(cojnal.getJndamv());
         List<Codetj> lstcodetj = cojnal.getLstcodetj();
         for (Codetj c : lstcodetj) {
+
             long cpauto = c.getCpauto();
             long djmond = c.getDjmond();
             long djmonc = c.getDjmonc();
             String cpcpte = c.getDjncoc() + c.getDjncod();
+
             String[] cpcptetbl = cpcpte.split(" ");
             if(cpcptetbl.length>=3) cpcpte = cpcptetbl[0] + ".." + cpcptetbl[2];
 
@@ -297,7 +301,7 @@ public class CojnalServiceImpl implements CojnalService{
             String cpinti = p.getClnomc();
             cpinti = (!cpinti.equals(""))?cpinti.split(" ")[0]:"";
 
-            Utils o = new Utils();
+
 
             //Change le statut de la collecte pour la mettre a Valider
             //-------------------------------------------------------------------
@@ -311,8 +315,9 @@ public class CojnalServiceImpl implements CojnalService{
             }
             //--------------------------------------------------------------------
             // Envoi le sms et Modifie le statut a 21 sms envoyé
+            datemvt = o.convertDateintToStr(c.getDjdacr());
             if(!cltelp.equals("") && String.valueOf(cltel1).length()>=9){
-                String messagesms = "M.(Mme) " + cpinti + ", " + typeop + " de votre compte " + cpcpte + " de XAF " + String.valueOf(montant) + " le  29-03-2021 à 10:54. Merci pour votre fidélité.";
+                String messagesms = "M.(Mme) " + cpinti + ", " + typeop + " de votre compte " + cpcpte + " de XAF " + String.valueOf(montant) + " le  " + datemvt + ". Merci pour votre fidélité.";
                 String destinataire = String.valueOf(cltel1);
                 String message = messagesms;
 
