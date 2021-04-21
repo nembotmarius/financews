@@ -153,6 +153,9 @@ public class CojnalServiceImpl implements CojnalService{
         //Convertir les données du model vers entity
         cojnal.setJndacr(o.getCurrentDate2());
         CojnalEntity cojnalentity = CojnalMapper.INSTANCE.mapModelToEntity(cojnal);
+        //Restreindre la date a l'heure uniquement
+        String jndamv = String.valueOf(cojnalentity.getJndamv()).substring(0,8);
+        cojnalentity.setJndamv(Long.parseLong(jndamv));
         //Enregistre l'entete de l'ecriture comptable dans la base et recupere le nouvel enregistrement
         CojnalEntity cojnalentityresult = cojnalrepository.save(cojnalentity);
         //Convertir l'entity vers le model

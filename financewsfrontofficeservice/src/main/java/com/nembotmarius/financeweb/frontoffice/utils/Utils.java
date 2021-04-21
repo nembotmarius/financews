@@ -48,7 +48,10 @@ public class Utils {
 
     public String convertDateintToStr(long intdate){
         String strdate = String.valueOf(intdate);
-        String result = strdate.substring(6, 8) + "/" + strdate.substring(4, 6) + "/" + strdate.substring(0, 4) + " " + strdate.substring(8, 10) + ":" + strdate.substring(10, 12);
+        String result = strdate.substring(6, 8) + "/" + strdate.substring(4, 6) + "/" + strdate.substring(0, 4);
+        if(strdate.length()>=12){
+            result = strdate.substring(6, 8) + "/" + strdate.substring(4, 6) + "/" + strdate.substring(0, 4) + " " + strdate.substring(8, 10) + ":" + strdate.substring(10, 12);
+        }
         return result;
     }
 
