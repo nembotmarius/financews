@@ -193,6 +193,92 @@ public class CojnalServiceImpl implements CojnalService{
         return cojnaltoreturn;
     }
 
+    //Ajoute une liste d'operation comptable dans la base de données. Si le solde du compte nest pas ok alors rejete l'operation avec motif
+    // et le solde du compte est retourné
+    @Override
+    public List<Cojnal> AddBatchJnalCpte(String user, String token, List<Cojnal> listecojnal, String option) {
+        //Verifie que le token est valide
+        //si non valide renvoi une erreur 401
+        if(!checkAuthentification(user, token)){
+            throw new AuthenticationFail("Vous n'etes pas autorisé à utiliser ce service");
+        }
+
+        List<Cojnal> listcojnaltoreturn = new ArrayList<>();
+
+        for (Cojnal jnal : listecojnal) {
+            //si valide
+            //Verifie si les comptes a debiter ont des soldes disponibles
+            //sinon marque cette ecriture comme étant non enregistrés
+            List<Codetj> lstc = jnal.getLstcodetj();
+            List<Codetj> lstc2 = new ArrayList<>();
+
+            for (Codetj c : lstc) {
+                //Recupere les champs supplementaires pour la mise à jour
+                String cpcpte = c.getDjncoc() + c.getDjncod();
+                long stauto = c.getStauto();
+
+                CodetjRepository.Codetjplus cp = codetjrepository.findCodetj(cpcpte, stauto);
+                c.setCpauto(cp.getCpauto());
+                c.setCsauto(cp.getCsauto());
+                c.setCscode(cp.getCscode());
+                c.setCstypc(cp.getCstypc());
+                c.setCpinti(cp.getCpinti());
+                lstc2.add(c);
+            }
+
+            //Mets a jour la liste des operations a effectuer
+            jnal.setLstcodetj(lstc2);
+
+            //Verifie si l'ecriture est solvable
+            Cojnal cojnalaftercheck = checkSolde(user, token, jnal, option);
+            if(cojnalaftercheck.getJnstat()==99 && !option.equals("force")){
+                listcojnaltoreturn.add(cojnalaftercheck);
+            }else{
+                Utils o = new Utils();
+                //Convertir les données du model vers entity
+                jnal.setJndacr(o.getCurrentDate2());
+                CojnalEntity cojnalentity = CojnalMapper.INSTANCE.mapModelToEntity(jnal);
+
+                //Formatter la date a YYYYMMDD
+                String jndamv = String.valueOf(cojnalentity.getJndamv()).substring(0,8);
+                cojnalentity.setJndamv(Long.parseLong(jndamv));
+
+                //Enregistre l'entete de l'ecriture comptable dans la base et recupere le nouvel enregistrement
+                CojnalEntity cojnalentityresult = cojnalrepository.save(cojnalentity);
+
+                //Convertir l'entity vers le model
+                Cojnal cojnaltoreturn = CojnalMapper.INSTANCE.mapEntityToModel(cojnalentityresult);
+
+                //recupère les lignes de details pour les enregistrer dans la base
+                List<Codetj> lstcodetj = jnal.getLstcodetj();
+                List<Codetj> lstcodetjtoreturn = new ArrayList<>();
+
+                for (Codetj c : lstcodetj) {
+                    //Mets a jour la clé etrangère et converti le model en entity
+                    c.setDjdaup(o.getCurrentDate2());
+                    c.setJnauto(cojnaltoreturn.getJnauto());
+                    //-------------------------------------------------------
+                    CodetjEntity codetjentity = CodetjMapper.INSTANCE.mapModelToEntity(c);
+                    //Sauvegarde dans la base
+                    CodetjEntity codetjentityresult = codetjrepository.save(codetjentity);
+                    Codetj codetjtoreturn = CodetjMapper.INSTANCE.mapEntityToModel(codetjentityresult);
+                    lstcodetjtoreturn.add(codetjtoreturn);
+                }
+
+                //mets à jour la liste des ecritures comptables du journal
+                cojnaltoreturn.setLstcodetj(lstcodetjtoreturn);
+
+                listcojnaltoreturn.add(cojnaltoreturn);
+
+                //Envoi de messages au clients
+                smsClientGlobal(cojnaltoreturn);
+            }
+
+        }
+
+        return listcojnaltoreturn;
+    }
+
     @Override
     public Cojnal SaveJnalCpte(String user, String token, Cojnal cojnal) {
         return null;
@@ -259,6 +345,79 @@ public class CojnalServiceImpl implements CojnalService{
             }
         }
         return result;
+    }
+
+    public Cojnal checkSolde(String user, String token, Cojnal cojnal, String option) {
+
+        //Cette fonction liste les comptes a debiter d'une ecriture comptable
+        // et verifie si le solde est disponible
+
+        Cojnal cojnalreturn = new Cojnal();
+
+        //Tranfert les données de l'objet d'entrée dans l'objet de sortie
+        cojnalreturn.setJnauto(cojnal.getJnauto());
+        cojnalreturn.setStauto(cojnal.getStauto());
+        cojnalreturn.setJoauto(cojnal.getJoauto());
+        cojnalreturn.setJndamv(cojnal.getJndamv());
+        cojnalreturn.setJndasa(cojnal.getJndasa());
+        cojnalreturn.setJndava(cojnal.getJndava());
+        cojnalreturn.setJnmoti(cojnal.getJnmoti());
+        cojnalreturn.setJnstat(11);
+        cojnalreturn.setJnsrct(cojnal.getJnsrct());
+        cojnalreturn.setJnsrca(cojnal.getJnsrca());
+        cojnalreturn.setJndacr(cojnal.getJndacr());
+        cojnalreturn.setJnusup(cojnal.getJnusup());
+        cojnalreturn.setJndaup(cojnal.getJndaup());
+        cojnalreturn.setJnnoup(cojnal.getJnnoup());
+        cojnalreturn.setJndele(cojnal.getJndele());
+        cojnalreturn.setJnusde(cojnal.getJnusde());
+
+        List<Codetj> lstcodetj = cojnal.getLstcodetj();
+        List<Codetj> lstcodetjreturn = new ArrayList<>();
+
+        for (Codetj c : lstcodetj) {
+            long djmond = c.getDjmond();
+            int cstypc = (int) c.getCstypc();
+            if(cstypc!=4 && djmond>0){
+                long cpauto = c.getCpauto();
+                //recupere le solde du compte
+                Pacpte pacpte = pacpteservice.getComptebyid(user, token, String.valueOf(cpauto));
+                long solde = pacpte.getCpsold();
+                long fraisgestion = pacpte.getCsfrfc();
+                long decouvert = 0;
+                Collection<PadecoEntity> lsdeco = pacpte.getLsdeco();
+                for(PadecoEntity padecoentity : lsdeco){
+                    decouvert += padecoentity.getDcmont();
+                }
+
+                long montantbloque = 0;
+                Collection<PabloqEntity> lsbloq = pacpte.getLsbloq();
+                for(PabloqEntity pabloqentity : lsbloq){
+                    montantbloque += pabloqentity.getBlmont();
+                }
+
+                long soldedispo = solde + decouvert - fraisgestion - montantbloque;
+
+                //mets a jour le solde
+                c.setCssold(soldedispo);
+                if(soldedispo < djmond){
+                    String detailsolde = pacpte.getCpinti() + " - Solde insufisant \n" +
+                            " Solde : " + String.valueOf(solde) + "\n " +
+                            " Decouvert : " + String.valueOf(decouvert) + "\n " +
+                            " Montant Bloqué : " + String.valueOf(montantbloque) + "\n " +
+                            " Frais de gestion : " + String.valueOf(fraisgestion) + "\n " +
+                            " Solde disponible : " + String.valueOf(soldedispo) + "\n " +
+                            "--------------------------------------- \n";
+                    c.setCsdets(detailsolde);
+                    cojnalreturn.setJnstat(99);
+                }
+
+            }
+            lstcodetjreturn.add(c);
+        }
+
+        cojnalreturn.setLstcodetj(lstcodetjreturn);
+        return cojnalreturn;
     }
 
     public String smsClient(Cojnal cojnal) {
@@ -333,6 +492,71 @@ public class CojnalServiceImpl implements CojnalService{
             //Mets a jour les données dans la base
             if(antranentity!=null)  antranrepository.save(antranentity);
             //--------------------------------------------------------------
+        }
+        return result;
+    }
+
+    public String smsClientGlobal(Cojnal cojnal) {
+        //Cette fonction liste les comptes a debiter d'une ecriture comptable
+        // et verifie si le solde est disponible
+
+        String login = "";
+        String password = "";
+        String sender_id = "";
+
+        //Recupere la liste des configurations relative a l'envoi des messages
+        List<PaconfEntity> lstconfig = paconfrepository.findAllConfSms();
+        for (PaconfEntity cf : lstconfig) {
+            if(cf.getCfpk02().equals("login")) login = cf.getCfvst1();
+            if(cf.getCfpk02().equals("password")) password = cf.getCfvst1();
+            if(cf.getCfpk02().equals("sender_id")) sender_id = cf.getCfvst1();
+        }
+
+        String result = "";
+        Utils o = new Utils();
+        String datemvt = o.convertDateintToStr(cojnal.getJndamv());
+        List<Codetj> lstcodetj = cojnal.getLstcodetj();
+        for (Codetj c : lstcodetj) {
+
+            long cpauto = c.getCpauto();
+            long djmond = c.getDjmond();
+            long djmonc = c.getDjmonc();
+            long stauto = cojnal.getStauto();
+            String cpinti = c.getCpinti();
+            String cpcpte = c.getDjncoc() + c.getDjncod();
+            String cpcptecode = "";
+
+            String[] cpcptetbl = cpcpte.split(" ");
+
+            cpcptecode = cpcptetbl[0];
+            if(cpcptetbl.length>=3) cpcptecode = cpcptetbl[0] + ".." + cpcptetbl[2];
+
+            long montant = djmond + djmonc;
+
+            String typeop = "crédit";
+            if(djmond>0) typeop = "débit";
+
+            //Recupère le numero de telephone du client activé dans la table paconf
+            //si existe envoi le message
+
+            String telephone_number = "";
+            Collection<PaconfEntity> lstconfigsmsclient = paconfrepository.findConfSmsClient(stauto, cpcpte);
+
+            for (PaconfEntity smsconfclient : lstconfig) {
+                telephone_number = smsconfclient.getCfvst1();
+            }
+
+            // Envoi le sms et Modifie le statut a 21 sms envoyé
+            datemvt = o.convertDateintToStr(c.getDjdacr());
+            if(telephone_number.length()>=9){
+                String messagesms = "M.(Mme) " + cpinti + ", " + typeop + " de votre compte " + cpcptecode + " de XAF " + String.valueOf(montant) + " le  " + datemvt + ". Merci pour votre fidélité.";
+                String destinataire = telephone_number;
+                String message = messagesms;
+
+                if(!login.equals("") && !password.equals("") && !sender_id.equals("")){
+                    o.sendSms(login,password,sender_id,destinataire,message);
+                }
+            }
         }
         return result;
     }

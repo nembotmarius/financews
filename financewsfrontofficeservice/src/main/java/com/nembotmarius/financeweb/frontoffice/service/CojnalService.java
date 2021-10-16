@@ -28,6 +28,13 @@ public interface CojnalService {
             String option
     );
 
+    List<Cojnal> AddBatchJnalCpte(
+            String user,
+            String token,
+            List<Cojnal> listcojnal,
+            String option
+    );
+
     Cojnal SaveJnalCpte(
             String user,
             String token,

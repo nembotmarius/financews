@@ -73,6 +73,29 @@ public interface CojnalApi {
             @PathVariable("option") String option
     );
 
+    //  addbatchjnalcpte  Enregistre les ecritures comptables en batch
+    // ----------------------------------------------------------------
+    @PostMapping(path="/addbatchjnalcpte/{option}")
+    @ApiResponses(value = {
+            @ApiResponse(code=200, message="Ajoute une ecriture comptable dans la bd"),
+            @ApiResponse(code=400, message="Echec d'ajout"),
+            @ApiResponse(code=500, message="Echec Server"),
+            @ApiResponse(code=401, message="Echec d'authentification")
+    })
+    @ApiOperation(
+            value = "Ajoute des ecritures comptable dans la bd",
+            notes = "Cette opération va Ajouter des ecritures comptables dans la bd"
+    )
+    ResponseEntity<List<Cojnal>> AddBatchJnalCpte(
+            @RequestHeader("user") String user,
+            @RequestHeader("token") String token,
+            @Validated @NonNull @RequestBody List<Cojnal> listcojnal,
+            @PathVariable("option") String option
+    );
+    // -----------------------------------------------------------------------------------
+    // --- fin addbatchjnalcpte ----------------------------------------------------------
+
+
     //mise à jour des ecritures comptables
     @PutMapping(path="/savejnalcpte")
     @ApiResponses(value = {

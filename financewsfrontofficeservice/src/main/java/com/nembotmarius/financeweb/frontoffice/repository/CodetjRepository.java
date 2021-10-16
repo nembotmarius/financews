@@ -19,6 +19,9 @@ public interface CodetjRepository extends CrudRepository<CodetjEntity, Long> {
     @Query(value = "select a.cpauto, a.cpinti, b.csauto, b.cscode, b.cstypc from para.pacpte a inner join para.paclas b on a.csauto = b.csauto where a.cpcpte = :cpcpte", nativeQuery = true)
     Codetjplus findCodetj(String cpcpte);
 
+    @Query(value = "select a.cpauto, a.cpinti, b.csauto, b.cscode, b.cstypc from para.pacpte a inner join para.paclas b on a.csauto = b.csauto where a.cpcpte = :cpcpte and a.stauto = :stauto", nativeQuery = true)
+    Codetjplus findCodetj(String cpcpte, long stauto);
+
     interface Codetjplus {
         long    getCpauto();
         long    getCsauto();

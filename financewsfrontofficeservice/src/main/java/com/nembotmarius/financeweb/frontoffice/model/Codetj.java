@@ -30,4 +30,7 @@ public class Codetj {
     private long	cstypc;
     private String	cslibe;
     private String	djncoc2;
+
+    private long	cssold; // le montant du solde
+    private String	csdets; //Le details du solde
 }

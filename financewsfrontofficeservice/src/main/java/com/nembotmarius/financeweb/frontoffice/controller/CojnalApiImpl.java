@@ -29,6 +29,11 @@ public class CojnalApiImpl implements CojnalApi{
     }
 
     @Override
+    public ResponseEntity<List<Cojnal>> AddBatchJnalCpte(String user, String token, List<Cojnal> listcojnal, String option) {
+        return new ResponseEntity<>(cojnalservice.AddBatchJnalCpte(user, token, listcojnal, option), HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Cojnal> SaveJnalCpte(String user, String token, Cojnal cojnal) {
         return null;
     }
