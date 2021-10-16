@@ -1,5 +1,5 @@
 String branchName = "dev"
-String gitCredentials = "4d1ad663-0174-4f9d-b7a9-6d8695e734f0"
+String gitCredentials = "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"
 String repoUrl = "https://github.com/nembotmarius/financews.git"
 
 node {
@@ -37,10 +37,10 @@ node {
             sh "mvn clean verify"
         }
     }
-    stage ('Build docker image and launch container') {
+    stage ('Build docker image and launch container ') {
         echo 'start docker compose'
         dir('build') {
-            sh "docker container stop \$(docker container ls -q --filter name=prodfinancews*) || true"
+            sh "docker container stop \$(docker container ls -q --filter name=pprdfinancews*) || true"
             sh "docker rm \$(docker ps -a -q) || true"
             sh "docker image rmi \$(docker images | grep latest | tr -s ' ' | cut -d ' ' -f 3) || true"
             sh "docker-compose up -d"
