@@ -45,6 +45,8 @@ public class GatewayApplication {
 				registry.addMapping("/**")
 						.allowedOrigins("https://prod.socecbt.com","https://dev.socecbt.com")
 						.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
+
+				//.allowedOrigins("https://prod.socecbt.com","https://dev.socecbt.com","http://localhost:8080")
 			}
 		};
 	}
